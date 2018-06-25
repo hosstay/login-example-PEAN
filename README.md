@@ -17,9 +17,10 @@ Cloning the repository should be the only installation necessary
 ## Running the tests
 
 TODO: Make test code
+
 TODO: Explain how to run the automated tests
 
-### Break down into end to end tests
+### Break down of tests
 
 TODO: Explain what these tests test and why
 
