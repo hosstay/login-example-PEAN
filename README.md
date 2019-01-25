@@ -26,7 +26,7 @@ TODO: Explain what these tests test and why
 
 ## Deployment
 
-Start Backend: "node start"
+Start Backend: "node server"
 
 Start Frontend: "au run --watch"
 
