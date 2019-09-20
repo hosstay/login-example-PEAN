@@ -11,7 +11,7 @@ const RSA_PUBLIC_KEY = fs.readFileSync(path.resolve(__dirname, './public.key'));
 
 const SESSION_DURATION = 240;
 
-module.exports.generateJsonToken = function(payload){
+function generateJsonToken(payload){
   //make it a promise so i can wait for it to resolve
   return new Promise(function(resolve, reject){
     async function createSessionToken(payload) {
@@ -24,7 +24,7 @@ module.exports.generateJsonToken = function(payload){
   });
 }
 
-module.exports.verifyJsonToken = function(token){
+function verifyJsonToken(token){
   if(token){
     return jwt.verify(token, RSA_PUBLIC_KEY, {algorithms: ['RS256']}, function(err, token){
       if(err){
@@ -41,7 +41,7 @@ module.exports.verifyJsonToken = function(token){
 
 }
 
-module.exports.sanitize = function(input, name, minLength, maxLength){
+function sanitize(input, name, minLength, maxLength){
   if(input === ""){
     console.log(name + " field empty");
     return false;
@@ -71,3 +71,9 @@ module.exports.sanitize = function(input, name, minLength, maxLength){
     }
   }
 }
+
+module.exports = {
+  generateJsonToken: generateJsonToken,
+  verifyJsonToken: verifyJsonToken,
+  sanitize: sanitize
+};
