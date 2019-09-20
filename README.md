@@ -10,6 +10,12 @@ I've included the node modules in the repo for simplicities sake.
 
 TODO: Finish this section (Likely need node installed)
 
+### Database
+column_name    oridinl_position             column_default              data_type              character_maximum_length
+"id"	        1	               "nextval('users_id_seq'::regclass)"	"integer"	                    null
+"username"	    2		                          null                  "character varying"	             40
+"user_password"	3		                          null                  "character varying"	            null
+
 ### Installing
 
 Cloning the repository should be the only installation necessary
