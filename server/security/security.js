@@ -49,6 +49,9 @@ function verifyJsonToken(token){
 
 function sanitize(input, name, minLength, maxLength){
 
+  //decode since input was encoded before sent to backend
+  input = decodeURIComponent(input);
+
   if(input === ""){
 
     console.log(name + " field empty");
@@ -61,17 +64,22 @@ function sanitize(input, name, minLength, maxLength){
       return false;
     } else {
 
-      const regex = /^[\w ]+$/;
+      let regex;
+      let errorMessage;
 
-      //if the input doesn't match the regular expression, alert the user.
+      if(name === 'username'){
+        regex = /^[\w ]+$/;
+        errorMessage = 'Username field should only contain alphanumeric characters, underscores, and spaces.';
+      } else if (name === 'password'){
+        regex = /^(?=(?:\S*\d))(?=(?:\S*[A-Za-z]))(?=\S*[^A-Za-z0-9])\S{8,}/;
+        errorMessage = 'Password should have a minimum of 8 characters, at least 1 Uppercase Letter, 1 Lowercase Letter, 1 Number, and 1 Special Character.';
+      }
+
       if(!regex.test(input)){
-
-        console.log(name + " field should only contain alphanumeric characters, underscores, and spaces.");
+        console.log(errorMessage);
         return false;
       } else {
-
-        //returns input with special characters encoded in the off chance someone gets through the previous checks.
-        return encodeURIComponent(input);
+        return input;
       }
     }
   }

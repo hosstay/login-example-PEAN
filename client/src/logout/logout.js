@@ -1,25 +1,29 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {WebAPI} from '../web-api';
+import {errorHandler} from '../utility/utility';
 
 @inject(WebAPI, Router)
 export class Logout {
   constructor(api, router){
     this.api = api;
     this.router = router;
+  }
 
-    //call the promise logout function and do the rest after it resolves.
-    this.api.logOut().then(function(result){
+  async attached(){
+
+    try{
+
+      const result = await this.api.logout();
+
       if(result){
-        //stay here
         document.getElementsByTagName("BODY")[0].style.backgroundImage = "url(https://i.imgur.com/bh2ywHi.jpg)";
-        router.navigateToRoute('home');
+        this.router.navigateToRoute('home');
       } else {
+        throw 'Something went wrong while logging out.';
       }
-    }).catch(function(err){
-      console.log("Error in promise." + err);
-    });
-
-
+    } catch (err) {
+      return errorHandler({err: err, context: 'attached', isLast: true});
+    }
   }
 }

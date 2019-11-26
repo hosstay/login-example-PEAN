@@ -38,7 +38,7 @@ function errorHandler(errObj) {
       if (typeof errArr[i] === 'object') { //if item is err obj
         if (errArr[i].stack !== undefined) { //if err obj has .stack property (edge doesn't)
           output += errArr[i].stack + '\n';
-        } else if (errArr[i].message !== undefined){ //if is err obj
+        } else if (errArr[i].message !== undefined) { //if is err obj
           output += errArr[i].message + '\n';
         } else { //if is fetch response obj or other unidentified obj
           for (let j in errArr[i]) {
@@ -61,6 +61,15 @@ function errorHandler(errObj) {
   }
 }
 
+function timeoutPromise(milli) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {   
+      return resolve(true);
+    }, milli);
+  });
+}
+
 export {
-  errorHandler
+  errorHandler,
+  timeoutPromise
 };

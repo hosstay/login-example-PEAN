@@ -1,37 +1,16 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {WebAPI} from '../web-api';
-const sanitize = require('../sanitize-login');
+import {errorHandler} from '../utility/utility';
+import {sanitize} from '../sanitize-login';
 
 @inject(WebAPI, Router)
 export class Login {
   constructor(api, router){
     this.user = "";
     this.pass = "";
-    this.conf_pass = "";
-    this.registration = false;
     this.api = api;
     this.router = router;
-
-    //Allows the user to hit enter to submit the form
-    this.handleEnter = () => {
-      event.preventDefault();
-      if (event.keyCode === 13) {
-        document.getElementById("submit-button").click();
-      }
-    };
-
-    //Informs the user when capslock is on.
-    this.handleCapsLock = e => {
-      e = e || window.event;
-      var s = String.fromCharCode( e.keyCode || e.which );
-
-      if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey){
-        document.getElementById("error-text").innerHTML = "Caps Lock is on.";
-      }else{
-        document.getElementById("error-text").innerHTML = "";
-      }
-    };
 
     document.getElementsByTagName("BODY")[0].style.backgroundImage = "url(https://i.imgur.com/bh2ywHi.jpg)";
   }
@@ -48,17 +27,44 @@ export class Login {
   }
 
   submit() {
-    /* sanitize input */
-    const cleanUsername = sanitize.sanitize(this.user, "username", "error-text", 6, 32);
-    if (cleanUsername){
-      const cleanPassword = sanitize.sanitize(this.pass, "password", "error-text", 8, 18);
-      if (cleanPassword){
-        this.api.logIn(cleanUsername, cleanPassword);
+
+    try{
+
+      const cleanUsername = sanitize(this.user, "username", "error-text", 6, 32);
+      if (cleanUsername){
+
+        const cleanPassword = sanitize(this.pass, "password", "error-text", 8, 18);
+        if (cleanPassword){
+
+          return this.api.logIn(cleanUsername, cleanPassword);
+        }
       }
+    } catch (err) {
+      return errorHandler({err: err, context: 'submit', isLast: true});
     }
   }
 
   register() {
     this.router.navigateToRoute('register');
+  }
+
+  //Allows the user to hit enter to submit the form
+  handleEnter() {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      document.getElementById("submit-button").click();
+    }
+  }
+
+  //Informs the user when capslock is on.
+  handleCapsLock(event) {
+    event = event || window.event;
+    const char = String.fromCharCode( event.keyCode || event.which );
+
+    if ( char.toUpperCase() === char && char.toLowerCase() !== char && !event.shiftKey){
+      document.getElementById("error-text").innerHTML = "Caps Lock is on.";
+    }else{
+      document.getElementById("error-text").innerHTML = "";
+    }
   }
 }

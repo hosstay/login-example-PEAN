@@ -1,5 +1,5 @@
-const cryptoJs = require('crypto-js');
-const pako     = require('pako');
+import cryptoJs from '../../bower_components/crypto-js/crypto-js';
+import pako from 'pako';
 
 function encrypt(data) {
   let result = pako.deflate(JSON.stringify(data), { to: 'string' });

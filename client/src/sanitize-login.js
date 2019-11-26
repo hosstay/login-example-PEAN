@@ -13,23 +13,22 @@ module.exports.sanitize = function(input, id, err_id, minLength, maxLength){
       document.getElementById(id).focus();
       return false;
     } else {
-      // "/" define the area of the regex.
-      // ^ says there can be no text before this symbol
-      // $ says there can be no text after this symbol
-      // thus the input must conform to exactly what is contained in this pattern
-      // []+ means what is in the brackets can be repeated one or more times.
-      // \w means any alphanumeric character and underscores.
-      // there is a space after \w, thus allowing spaces.
-      // thus this expression matches only alphanumeric characters and spaces
-      const regex = /^[\w ]+$/;
+      let regex;
+      let errorMessage;
 
-      //if the input doesn't match the regular expression, alert the user.
+      if(id === 'username'){
+        regex = /^[\w ]+$/;
+        errorMessage = 'Username field should only contain alphanumeric characters, underscores, and spaces.';
+      } else if (id === 'password'){
+        regex = /^(?=(?:\S*\d))(?=(?:\S*[A-Za-z]))(?=\S*[^A-Za-z0-9])\S{8,}/;
+        errorMessage = 'Password should have a minimum of 8 characters, at least 1 Uppercase Letter, 1 Lowercase Letter, 1 Number, and 1 Special Character.';
+      }
+
       if(!regex.test(input)){
-        document.getElementById(err_id).innerHTML = "Incorrect username or password.";
+        document.getElementById(err_id).innerHTML = errorMessage;
         document.getElementById(id).focus();
         return false;
       } else {
-        //returns input with special characters encoded in the off chance someone gets through the previous checks.
         return encodeURIComponent(input);
       }
     }

@@ -1,6 +1,6 @@
 import {json}         from 'aurelia-fetch-client';
 import {errorHandler} from './utility';
-import {security}     from './security';
+import {decrypt}      from './security';
 
 export class DataLoader {
   constructor() {
@@ -58,7 +58,7 @@ export class DataLoader {
       // console.log('non-decrypted data');
       // console.log(data);
 
-      data = security.decrypt(data);
+      data = decrypt(data);
 
       console.log('data');
       console.log(data);

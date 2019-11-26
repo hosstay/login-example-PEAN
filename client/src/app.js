@@ -1,18 +1,10 @@
 import {inject, PLATFORM} from 'aurelia-framework';
 import {WebAPI} from './web-api';
-import {HttpClient} from 'aurelia-fetch-client';
 
-@inject(WebAPI,HttpClient)
+@inject(WebAPI)
 export class App {
-  constructor(api,httpClient){
+  constructor(api) {
     this.api = api;
-
-    httpClient.configure(config => {
-      config
-        .useStandardConfiguration();
-    });
-
-    this.httpClient = httpClient;
   }
 
   configureRouter(config, router) {
