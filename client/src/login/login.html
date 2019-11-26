@@ -1,0 +1,29 @@
+<template>
+  <require from="../login.css"></require>
+  <div id="login-div">
+    <form>
+      <label id="title">Test Website</label>
+      <br />
+      <br />
+
+      <label>Username:</label>
+      <input id="username" type="text" class="float-right" value.bind="user">
+      <br />
+      <br />
+
+      <label>Password:</label>
+      <input id="password" type="password" class="float-right" value.bind="pass">
+      <br />
+      <br />
+
+      <input id="submit-button" type="button" class="float-right" value="Submit" click.delegate="submit()">
+      <input id="register-button" type="button" class="float-left" value="Register" click.delegate="register()">
+      <br />
+      <br />
+
+      <p id="error-text"></p>
+      <br />
+      <br />
+    </form>
+  </div>
+</template>
