@@ -11,14 +11,17 @@ I've included the node modules in the repo for simplicities sake.
 TODO: Finish this section (Likely need node installed)
 
 ### Database
-column_name    oridinl_position             column_default              data_type              character_maximum_length
-"id"	        1	               "nextval('users_id_seq'::regclass)"	"integer"	                    null
-"username"	    2		                          null                  "character varying"	             40
-"user_password"	3		                          null                  "character varying"	            null
+
+Table "users"
+column_name             column_default                data_type              character_maximum_length
+"id"          "nextval('users_id_seq'::regclass)"	    "integer"	                     null
+"username"                   null                 "character varying"	                40
+"password"	                 null                 "character varying"	               200
 
 ### Installing
 
-Cloning the repository should be the only installation necessary
+* Install Node
+* Clone the repository
 
 ## Running the tests
 
@@ -32,13 +35,14 @@ TODO: Explain what these tests test and why
 
 ## Deployment
 
-Start Backend: "node server"
+Start Backend: "node server" or "nodemon --inspect server" if you have nodemon installed and want dedicated devtools.
 
 Start Frontend: "au run --watch"
 
 ## Built With
 
-* [Aurelia](https://aurelia.io/home) - The web framework used
+* [Aurelia](https://aurelia.io/home) - Frontend framework
+* [Node](https://nodejs.org/en/download/) - Backend framework
 * [NPM](https://www.npmjs.com/) - Dependency Management
 
 ## Authors
