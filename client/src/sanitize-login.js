@@ -3,7 +3,7 @@
 //er_id: the id of the element to output the error to
 //length: the allowable length of the string
 module.exports.sanitize = function(input, id, err_id, minLength, maxLength){
-  if(input === ""){
+  if(!input){
     document.getElementById(err_id).innerHTML = "Incorrect username or password.";
     document.getElementById(id).focus();
     return false;
@@ -17,10 +17,10 @@ module.exports.sanitize = function(input, id, err_id, minLength, maxLength){
       let errorMessage;
 
       if(id === 'username'){
-        regex = /^[\w ]+$/;
+        regex = RegExp(/^[\w ]+$/);
         errorMessage = 'Username field should only contain alphanumeric characters, underscores, and spaces.';
       } else if (id === 'password'){
-        regex = /^(?=(?:\S*\d))(?=(?:\S*[A-Za-z]))(?=\S*[^A-Za-z0-9])\S{8,}/;
+        regex = RegExp(/^(?=(?:\S*\d))(?=(?:\S*[A-Za-z]))(?=\S*[^A-Za-z0-9])\S{8,}/);
         errorMessage = 'Password should have a minimum of 8 characters, at least 1 Uppercase Letter, 1 Lowercase Letter, 1 Number, and 1 Special Character.';
       }
 
