@@ -8,6 +8,7 @@ export class Name {
   constructor(api, router) {
     this.api = api;
     this.router = router;
+    this.name;
   }
 
   async attached(){
