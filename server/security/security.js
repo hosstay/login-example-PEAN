@@ -31,7 +31,7 @@ function verifyJsonToken(token) {
   if (token) {
     return jwt.verify(token, RSA_PUBLIC_KEY, {algorithms: ['RS256']}, function(err, token){
       if (err) {
-        console.log("Err: " + err + ", returning false.");
+        console.log(`Err: ${err}, returning false.`);
         return false;
       } else {
         return true;
@@ -48,7 +48,7 @@ function sanitize(input, name, minLength, maxLength) {
   //decode since input was encoded before sent to backend
   input = decodeURIComponent(input);
 
-  if (input === "") {
+  if (input === '') {
     throw `${name} field empty`;
   } else {
     if (input.length < minLength || input.length > maxLength) {

@@ -21,7 +21,7 @@ function errorHandler(errObj) {
 
   let errArr = [];
 
-  if (typeof err === "string") {
+  if (typeof err === 'string') {
     errArr.push(err); //case where string is explicitly thrown
   } else if(err[0] !== undefined) {
     errArr = err; //case where it's the array we're passing foward
@@ -29,24 +29,24 @@ function errorHandler(errObj) {
     errArr.push(err); //case where a inexplicit error is thrown
   }
 
-  errArr.push("=> " + context);
+  errArr.push('=> ' + context);
 
   if (isLast) {
-    let output = "";
+    let output = '';
 
     for (let i in errArr) {
-      if (typeof errArr[i] === "object") { //if item is err obj
+      if (typeof errArr[i] === 'object') { //if item is err obj
         if (errArr[i].stack !== undefined) { //if err obj has .stack property (edge doesn't)
-          output += errArr[i].stack + "\n";
+          output += errArr[i].stack + '\n';
         } else if (errArr[i].message !== undefined) { //if is err obj
-          output += errArr[i].message + "\n";
+          output += errArr[i].message + '\n';
         } else { //if is fetch response obj or other unidentified obj
           for (let j in errArr[i]) {
-            output += j + ": " + errArr[i][j] + "\n";
+            output += j + ': ' + errArr[i][j] + '\n';
           }
         }
       } else { //if item is string
-        output += errArr[i] + "\n";
+        output += errArr[i] + '\n';
       }
     }
 

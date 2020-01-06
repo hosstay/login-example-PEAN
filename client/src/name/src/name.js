@@ -25,7 +25,7 @@ export class Name {
 
   submit() {
     try {
-      const cleanInput = sanitize(this.name, "name", 0, 32);
+      const cleanInput = sanitize(this.name, 'name', 0, 32);
       document.getElementById('output').innerHTML = `${cleanInput} is awesome!`;
     } catch(err) {
       if (typeof err === 'string'){

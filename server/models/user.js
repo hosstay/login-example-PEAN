@@ -15,15 +15,15 @@ async function createUser(req, res) {
     const hashedPassword = bcrypt.hashSync(cleanPassword, salt);
 
     const result = await db.query(
-      "SELECT * FROM users WHERE username=?",
+      'SELECT * FROM users WHERE username=?',
       { replacements: [cleanUsername],
         type: db.QueryTypes.SELECT }
     );
 
-    if (result !== undefined && result.length !== 0) {throw "Username already exists.";}
+    if (result !== undefined && result.length !== 0) {throw 'Username already exists.';}
 
     await db.query(
-      "INSERT INTO users (username, password) VALUES (?, ?)",
+      'INSERT INTO users (username, password) VALUES (?, ?)',
       { replacements: [cleanUsername, hashedPassword],
         type: db.QueryTypes.SELECT }
     );
@@ -48,24 +48,24 @@ async function login(req, res) {
     const submittedPassword = cleanPassword;
 
     const result = await db.query(
-      "SELECT * FROM users WHERE username=?",
+      'SELECT * FROM users WHERE username=?',
       { replacements: [cleanUsername],
         type: db.QueryTypes.SELECT }
     );
 
-    if (result.length === 0) {throw "Incorrect username or password.";}
+    if (result.length === 0) {throw 'Incorrect username or password.';}
 
     const userData = result[0];
     const isVerified = bcrypt.compareSync(submittedPassword, userData.password);
 
-    if (!isVerified) {throw "Incorrect username or password.";}
+    if (!isVerified) {throw 'Incorrect username or password.';}
 
     //User authenticated... give them a token cookie
     const payload = {
-      "id:":userData.id
+      'id:':userData.id
     }
     const sessionToken = await security.generateJsonToken(payload);
-    res.cookie("SESSIONID", sessionToken, { expires: new Date(Date.now() + 900000)});//, httpOnly:true, secure:true});
+    res.cookie('SESSIONID', sessionToken, { expires: new Date(Date.now() + 900000)});//, httpOnly:true, secure:true});
     return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
   } catch(err) {
     util.errorHandler({err: err, context: 'login', isLast: true});

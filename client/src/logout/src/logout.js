@@ -22,7 +22,7 @@ export class Logout {
       const result = await this.api.logout();
 
       if (result) {
-        document.getElementsByTagName("BODY")[0].style.backgroundImage = "url(https://i.imgur.com/bh2ywHi.jpg)";
+        document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(https://i.imgur.com/bh2ywHi.jpg)';
         this.router.navigateToRoute('home');
       } else {
         throw 'Something went wrong while logging out.';
