@@ -37,7 +37,7 @@ TODO: Explain what these tests test and why
 
 Start Backend: "node server" or "nodemon --inspect server" if you have nodemon installed and want dedicated devtools.
 
-Start Frontend: "au run --watch"
+Start Frontend: "npm start" or "au run --watch" if you have aurelia cli installed and want it to watch for changes.
 
 ## Built With
 
