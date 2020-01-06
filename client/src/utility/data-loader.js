@@ -2,6 +2,24 @@ import {json}         from 'aurelia-fetch-client';
 import {errorHandler} from './utility';
 import {decrypt}      from './security';
 
+/*
+  Class for easy fetching using the decrypt & check success pattern.
+  Also allows for easy cacheing.
+
+  Usage:
+  
+  const response = await this.dataLoader.httpFetch({
+    httpClient: this.httpClient,
+    prefix: 'api/your/prefix/',
+    endpoint: endpoint,
+    payload: {
+      data: yourData
+    },
+    useCache: true,
+    customCacheName: endpoint + '/' + customNamePostfix
+  });
+*/
+
 export class DataLoader {
   constructor() {
     this.cache = [];
