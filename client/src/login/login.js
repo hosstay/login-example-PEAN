@@ -26,7 +26,7 @@ export class Login {
     document.removeEventListener("keypress", this.handleCapsLock);
   }
 
-  submit() {
+  async submit() {
     try {
       const cleanUsername = sanitize(this.user, "username", "error-text", 6, 32);
       if (!cleanUsername) return;
@@ -34,7 +34,7 @@ export class Login {
       const cleanPassword = sanitize(this.pass, "password", "error-text", 8, 18);
       if (!cleanPassword) return;
       
-      this.api.logIn(cleanUsername, cleanPassword);
+      await this.api.logIn(cleanUsername, cleanPassword);
     } catch (err) {
       return errorHandler({err: err, context: 'submit', isLast: true});
     }
