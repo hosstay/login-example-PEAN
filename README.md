@@ -6,17 +6,21 @@ An implementation of a website with login using Aurelia, Node, Express, & Postgr
 
 ### Prerequisites
 
-I've included the node modules in the repo for simplicities sake. 
+Have Node installed
 
-TODO: Finish this section (Likely need node installed)
+I've included the node modules in the repo for simplicities sake. 
 
 ### Database
 
-Table "users"
+Table 'users'
+
 column_name             column_default                data_type              character_maximum_length
-"id"          "nextval('users_id_seq'::regclass)"	    "integer"	                     null
-"username"                   null                 "character varying"	                40
-"password"	                 null                 "character varying"	               200
+
+'id'          'nextval('users_id_seq'::regclass)'	    'integer'	                     null
+
+'username'                   null                 'character varying'	                40
+
+'password'	                 null                 'character varying'	               200
 
 ### Installing
 
@@ -35,9 +39,9 @@ TODO: Explain what these tests test and why
 
 ## Deployment
 
-Start Backend: "node server" or "nodemon --inspect server" if you have nodemon installed and want dedicated devtools.
+Start Backend: 'node server' or 'nodemon --inspect server' if you have nodemon installed and want dedicated devtools.
 
-Start Frontend: "npm start" or "au run --watch" if you have aurelia cli installed and want it to watch for changes.
+Start Frontend: 'npm start' or 'au run --watch' if you have aurelia cli installed and want it to watch for changes.
 
 ## Built With
 
