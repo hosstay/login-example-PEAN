@@ -49,13 +49,10 @@ function sanitize(input, name, minLength, maxLength) {
   input = decodeURIComponent(input);
 
   if (input === "") {
-    console.log(name + " field empty");
-    return false;
+    throw `${name} field empty`;
   } else {
-
     if (input.length < minLength || input.length > maxLength) {
-      console.log(name + " field must be between " + minLength + " and " + maxLength + " characters.");
-      return false;
+      throw `${name} must be between ${minLength} and ${maxLength} characters.`;
     } else {
       let regex;
       let errorMessage;
@@ -69,8 +66,7 @@ function sanitize(input, name, minLength, maxLength) {
       }
 
       if (!regex.test(input)) {
-        console.log(errorMessage);
-        return false;
+        throw errorMessage;
       } else {
         return input;
       }
