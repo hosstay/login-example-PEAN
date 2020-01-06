@@ -9,7 +9,7 @@ export class Medova {
     this.router = router;
   }
 
-  async attached(){
+  async attached() {
     try {
       const result = await this.api.verifyToken();
 

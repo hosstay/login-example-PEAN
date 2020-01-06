@@ -31,7 +31,7 @@ async function createUser(req, res){
               type: db.QueryTypes.SELECT }
           );
           
-          return res.status(200).json(security.encrypt({success: true, result: true}));
+          return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
         }else{
           throw "Username already exists.";
         }
@@ -42,7 +42,14 @@ async function createUser(req, res){
       throw "Incorrect username or password.";
     }
   }catch(err){
-    return res.status(200).json(security.encrypt({success: false, result: {msg: `User not created.`, result: util.errorHandler({err: err, context: 'createUser', isLast: true})}}));
+
+    util.errorHandler({err: err, context: 'createUser', isLast: true});
+    
+    if(typeof err === 'string'){
+      return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: err}}));
+    } else {
+      return res.status(200).json(security.encrypt({success: false, msg: `User not created.`}));
+    }
   }
 }
 
@@ -79,7 +86,7 @@ async function login(req, res){
             const sessionToken = await security.generateJsonToken(payload);
 
             res.cookie("SESSIONID", sessionToken, { expires: new Date(Date.now() + 900000)});//, httpOnly:true, secure:true});
-            return res.status(200).json(security.encrypt({success: true, result: {msg: 'You have successfully logged in.', result: {username: userData.username}}}));
+            return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
           } else {
             throw "Incorrect username or password.";
           }
@@ -93,13 +100,18 @@ async function login(req, res){
       throw "Incorrect username or password.";
     }
   }catch(err){
-    return res.status(200).json(security.encrypt({success: false, result: {msg: 'Could not be logged in.', result: util.errorHandler({err: err, context: 'login', isLast: true})}}));
+
+    util.errorHandler({err: err, context: 'login', isLast: true});
+    
+    if(typeof err === 'string'){
+      return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: err}}));
+    } else {
+      return res.status(200).json(security.encrypt({success: false, msg: `Could not be logged in.`}));
+    }
   }
 }
 
 function verifyToken(req, res){
-  console.log("here");
-
   console.log(`req.cookies['SESSIONID']`);
   console.log(req.cookies['SESSIONID']);
   const verified = security.verifyJsonToken(req.cookies['SESSIONID']);
@@ -123,7 +135,7 @@ function logout(req, res){
   } else {
 
     console.log(`User wasn't logged in so can't log out.`);
-    return res.status(200).json(security.encrypt({success: false, result: {msg: `Not logged in. Can't Log out.`, result: false}}));
+    return res.status(200).json(security.encrypt({success: true, result: false}));
   }
 }
 

@@ -26,7 +26,6 @@ export class WebAPI {
 
   async logIn(user, pass) {
     try {
-
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/user/',
@@ -34,26 +33,29 @@ export class WebAPI {
         payload: {
           username: user,
           password: pass
-        },
-        useCache: false
+        }
       });
 
-      document.getElementById('error-text').innerHTML = 'You have successfully logged in.'
+      if (response.success) {
+
+        document.getElementById('error-text').innerHTML = 'You have successfully logged in.'
       
-      await timeoutPromise(2000);
+        await timeoutPromise(2000);
+  
+        document.getElementsByTagName('BODY')[0].style.backgroundImage = 'none';
+        return this.router.navigateToRoute('home');
+      } else {
+        document.getElementById('error-text').innerHTML = response.msg;
+      }
 
-      document.getElementsByTagName('BODY')[0].style.backgroundImage = 'none';
-      this.router.navigateToRoute('home');
-
-      return response;
     } catch (err) {
-      return errorHandler({err: err, context: 'addUser'});
+      document.getElementById('error-text').innerHTML = err[0];
+      return errorHandler({err: err, context: 'logIn', isLast: true});
     }
   }
 
   async addUser(user, pass) {
     try {
-
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/user/',
@@ -61,54 +63,54 @@ export class WebAPI {
         payload: {
           username: user,
           password: pass
-        },
-        useCache: false
+        }
       });
 
-      document.getElementById('error-text').innerHTML = 
-        'You have successfully registered. ' +
-        'This page will navigate back to the login screen in 3 seconds.';
-      
-      await timeoutPromise(2000);
+      if (response.success) {
+        
+        document.getElementById('error-text').innerHTML = 
+          'You have successfully registered. ' +
+          'This page will navigate back to the login screen in 3 seconds.';
+          
+        await timeoutPromise(2000);
 
-      this.router.navigateToRoute('login');
+        return this.router.navigateToRoute('login');
+      } else {
+        document.getElementById('error-text').innerHTML = response.msg;
+      }
 
-      return response;
     } catch (err) {
-      return errorHandler({err: err, context: 'addUser'});
+      document.getElementById('error-text').innerHTML = err[0];
+      return errorHandler({err: err, context: 'addUser', isLast: true});
     }
   }
 
   async verifyToken() {
     try {
-
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/secure/',
-        endpoint: 'verify',
-        payload: {},
-        useCache: false
+        endpoint: 'verify'
       });
-
+        
       return response;
     } catch (err) {
+      document.getElementById('error-text').innerHTML = err[0];
       return errorHandler({err: err, context: 'verifyToken'});
     }
   }
 
   async logout() {
     try {
-
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/user/',
-        endpoint: 'logout',
-        payload: {},
-        useCache: false
+        endpoint: 'logout'
       });
-
+      
       return response;
     } catch (err) {
+      document.getElementById('error-text').innerHTML = err[0];
       return errorHandler({err: err, context: 'logout'});
     }
   }

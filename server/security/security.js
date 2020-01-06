@@ -44,7 +44,6 @@ function verifyJsonToken(token){
     //No token with that name was found, thus not verified.
     return false;
   }
-
 }
 
 function sanitize(input, name, minLength, maxLength){

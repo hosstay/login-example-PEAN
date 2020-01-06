@@ -11,7 +11,7 @@ export class Name {
     this.name;
   }
 
-  async attached(){
+  async attached() {
     try {
       const result = await this.api.verifyToken();
 
@@ -25,7 +25,7 @@ export class Name {
 
   submit() {
     const cleanInput = sanitize.sanitize(this.name, "name", "output", 0, 32);
-    if (cleanInput){
+    if (cleanInput) {
       document.getElementById('output').innerHTML = `${cleanInput} is awesome!`;
     }
   }

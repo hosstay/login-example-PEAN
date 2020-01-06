@@ -8,7 +8,6 @@ export class DataLoader {
   }
 
   addToCache(data, options) {
-
     const name = options.customCacheName === undefined ? options.endpoint : options.customCacheName;
 
     this.cache.push({
@@ -26,7 +25,6 @@ export class DataLoader {
   }
 
   findIndexInCache(options) {
-
     const list = this.cache;
     let index = -1;
     const endpoint = options.customCacheName === undefined ? options.endpoint : options.customCacheName;
@@ -42,16 +40,16 @@ export class DataLoader {
   }
 
   async fetch(options) {
-
     try {
-
       console.log('-------------------------');
       console.log('fetching...');
       console.log(options);
 
+      const payload = options.payload ? options.payload : {};
+
       let response = await options.httpClient.fetch(options.prefix + options.endpoint, {
         method: 'post',
-        body: json(options.payload)
+        body: json(payload)
       });
       let data = await response.json();
 
@@ -66,20 +64,16 @@ export class DataLoader {
       if (data.success) {
         console.log('success');
 
-        if (options.useCache){
+        if (options.useCache) {
           this.addToCache(data.result, options);
         }
 
         return data.result;
       } else {
-        console.log('data.result');
-        console.log(data.result);
+        console.log('data.msg');
+        console.log(data.msg);
 
-        if (data.result) {
-          return errorHandler({err: data.result, context: 'fetch failure'});
-        } else {
-          throw 'Error loading data:' + JSON.stringify(data.result);
-        }
+        throw data.msg;
       }
     } catch (err) {
       return errorHandler({err: err, context: 'fetch'});

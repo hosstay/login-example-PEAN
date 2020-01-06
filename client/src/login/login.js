@@ -6,7 +6,7 @@ import {sanitize} from '../sanitize-login';
 
 @inject(WebAPI, Router)
 export class Login {
-  constructor(api, router){
+  constructor(api, router) {
     this.user = "";
     this.pass = "";
     this.api = api;
@@ -15,30 +15,26 @@ export class Login {
     document.getElementsByTagName("BODY")[0].style.backgroundImage = "url(https://i.imgur.com/bh2ywHi.jpg)";
   }
 
-  attached(){
+  attached() {
     document.addEventListener("keyup", this.handleEnter);
     document.addEventListener("keypress", this.handleCapsLock);
     document.getElementById("username").focus();
   }
 
-  detached(){
+  detached() {
     document.removeEventListener("keyup", this.handleEnter);
     document.removeEventListener("keypress", this.handleCapsLock);
   }
 
   submit() {
-
-    try{
-
+    try {
       const cleanUsername = sanitize(this.user, "username", "error-text", 6, 32);
-      if (cleanUsername){
+      if (!cleanUsername) return;
 
-        const cleanPassword = sanitize(this.pass, "password", "error-text", 8, 18);
-        if (cleanPassword){
-
-          return this.api.logIn(cleanUsername, cleanPassword);
-        }
-      }
+      const cleanPassword = sanitize(this.pass, "password", "error-text", 8, 18);
+      if (!cleanPassword) return;
+      
+      this.api.logIn(cleanUsername, cleanPassword);
     } catch (err) {
       return errorHandler({err: err, context: 'submit', isLast: true});
     }
@@ -59,9 +55,9 @@ export class Login {
   //Informs the user when capslock is on.
   handleCapsLock(event) {
     event = event || window.event;
-    const char = String.fromCharCode( event.keyCode || event.which );
+    const char = String.fromCharCode(event.keyCode || event.which);
 
-    if ( char.toUpperCase() === char && char.toLowerCase() !== char && !event.shiftKey){
+    if (char.toUpperCase() === char && char.toLowerCase() !== char && !event.shiftKey) {
       document.getElementById("error-text").innerHTML = "Caps Lock is on.";
     }else{
       document.getElementById("error-text").innerHTML = "";
