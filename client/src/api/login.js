@@ -6,7 +6,7 @@ import {errorHandler,
         timeoutPromise} from './utility/utility';
 
 @inject(Router, HttpClient, DataLoader)
-export class WebAPI {
+export class LoginApi {
   constructor(router, httpClient, dataLoader) {
     this.router = router;
     this.httpClient = httpClient;
@@ -50,7 +50,7 @@ export class WebAPI {
 
     } catch (err) {
       document.getElementById('error-text').innerHTML = err[0];
-      return errorHandler({err: err, context: 'logIn', isLast: true});
+      return errorHandler({err: err, context: 'logIn'});
     }
   }
 
@@ -81,7 +81,7 @@ export class WebAPI {
 
     } catch (err) {
       document.getElementById('error-text').innerHTML = err[0];
-      return errorHandler({err: err, context: 'addUser', isLast: true});
+      return errorHandler({err: err, context: 'addUser'});
     }
   }
 

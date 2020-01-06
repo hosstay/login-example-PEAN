@@ -1,10 +1,10 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {WebAPI} from '../web-api';
-import {sanitize} from '../sanitize-login';
+import {LoginApi} from '../api/login';
+import {sanitizeLogin} from '../sanitize-login';
 import {errorHandler} from '../utility/utility';
 
-@inject(WebAPI, Router)
+@inject(LoginApi, Router)
 export class Register {
   constructor(api, router) {
     this.user = "";

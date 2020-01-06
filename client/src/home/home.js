@@ -1,9 +1,9 @@
-import {inject}       from 'aurelia-framework';
-import {Router}       from 'aurelia-router';
-import {WebAPI}       from '../web-api';
+import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
+import {LoginApi} from '../api/login';
 import {errorHandler} from '../utility/utility';
 
-@inject(WebAPI, Router)
+@inject(LoginApi, Router)
 export class Home {
   constructor(api, router) {
     this.api = api;

@@ -1,8 +1,8 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {WebAPI} from '../web-api';
+import {LoginApi} from '../api/login';
 
-@inject(WebAPI, Router)
+@inject(LoginApi, Router)
 export class Medova {
   constructor(api, router) {
     this.api = api;

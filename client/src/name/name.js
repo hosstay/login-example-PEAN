@@ -1,9 +1,9 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {WebAPI} from '../web-api';
-const sanitize = require('../sanitize');
+import {LoginApi} from '../api/login';
+import {sanitize} from '../utility/security';
 
-@inject(WebAPI, Router)
+@inject(LoginApi, Router)
 export class Name {
   constructor(api, router) {
     this.api = api;
