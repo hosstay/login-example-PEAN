@@ -29,14 +29,8 @@ export class Register {
 
   async submit() {
     try {
-      const cleanUsername = sanitize(this.user, "username", "error-text", 6, 32);
-      if (!cleanUsername) return;
-
-      const cleanPassword = sanitize(this.pass, "password", "error-text", 8, 18);
-      if (!cleanPassword) return;
-
-      const cleanConfPass = sanitize(this.conf_pass, "password", "error-text", 8, 18);
-      if (!cleanConfPass) return;
+      const cleanUsername = sanitizeLogin(this.user, "username", 6, 32);
+      const cleanPassword = sanitizeLogin(this.pass, "password", 8, 18);
 
       if (this.pass === this.conf_pass) {
         await this.api.addUser(cleanUsername, cleanPassword);
@@ -44,7 +38,11 @@ export class Register {
         document.getElementById('error-text').innerHTML = "Password and Confirm Password did not match.";
       }
     } catch (err) {
-      return errorHandler({err: err, context: 'submit', isLast: true});
+      if (typeof err === 'string'){
+        document.getElementById('error-text').innerHTML = err;
+      } else {
+        return errorHandler({err: err, context: 'submit', isLast: true});
+      }
     }
   }
 

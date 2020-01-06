@@ -24,9 +24,15 @@ export class Name {
   }
 
   submit() {
-    const cleanInput = sanitize.sanitize(this.name, "name", "output", 0, 32);
-    if (cleanInput) {
+    try {
+      const cleanInput = sanitize(this.name, "name", 0, 32);
       document.getElementById('output').innerHTML = `${cleanInput} is awesome!`;
+    } catch(err) {
+      if (typeof err === 'string'){
+        document.getElementById('output').innerHTML = err;
+      } else {
+        return errorHandler({err: err, context: 'submit', isLast: true});
+      }
     }
   }
 }
