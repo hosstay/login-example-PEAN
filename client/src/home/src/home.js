@@ -12,10 +12,9 @@ export class Home {
 
   async attached() {
     try {
-      const result = await this.api.verifyToken();
-      console.log(result);
+      const hasToken = await this.api.verifyToken();
 
-      if (!result) {
+      if (!hasToken) {
         this.router.navigateToRoute('login');
       }
     } catch (err) {
