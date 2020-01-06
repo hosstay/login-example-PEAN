@@ -25,15 +25,12 @@ export class WebAPI {
   }
 
   async logIn(user, pass) {
-
     try {
-
-      const END_POINT = 'login';
 
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/user/',
-        endpoint: END_POINT,
+        endpoint: 'login',
         payload: {
           username: user,
           password: pass
@@ -55,15 +52,12 @@ export class WebAPI {
   }
 
   async addUser(user, pass) {
-
     try {
-
-      const END_POINT = 'create';
 
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/user/',
-        endpoint: END_POINT,
+        endpoint: 'create',
         payload: {
           username: user,
           password: pass
@@ -86,15 +80,12 @@ export class WebAPI {
   }
 
   async verifyToken() {
-
     try {
-
-      const END_POINT = 'verify';
 
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/secure/',
-        endpoint: END_POINT,
+        endpoint: 'verify',
         payload: {},
         useCache: false
       });
@@ -106,22 +97,19 @@ export class WebAPI {
   }
 
   async logout() {
-
     try {
-
-      const END_POINT = 'logout';
 
       const response = await this.dataLoader.httpFetch({
         httpClient: this.httpClient,
         prefix: 'api/user/',
-        endpoint: END_POINT,
+        endpoint: 'logout',
         payload: {},
         useCache: false
       });
 
       return response;
     } catch (err) {
-      return errorHandler({err: err, context: 'logOut'});
+      return errorHandler({err: err, context: 'logout'});
     }
   }
 }
