@@ -24,8 +24,8 @@ app.use(require('./controllers/user-controller'));
 const port = 3000;
 
 //interact with database and front end
-db.sync().then(function(){ //sync up with the database before continuing
-  app.listen(port, function(){ //listen for interactions from app on port 3000
+db.sync().then(function() { //sync up with the database before continuing
+  app.listen(port, function() { //listen for interactions from app on port 3000
     console.log(`Listening on port ${port}.`);
   })
 })
