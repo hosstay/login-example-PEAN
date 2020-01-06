@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {LoginApi} from '../api/login';
-import {errorHandler} from '../utility/utility';
+import {LoginApi} from '../../api/login';
+import {errorHandler} from '../../utility/utility';
 
 @inject(LoginApi, Router)
 export class Home {

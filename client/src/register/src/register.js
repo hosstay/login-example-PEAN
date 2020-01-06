@@ -1,14 +1,15 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {LoginApi} from '../api/login';
-import {errorHandler} from '../utility/utility';
-import {sanitizeLogin} from '../utility/security';
+import {LoginApi} from '../../api/login';
+import {sanitizeLogin} from '../../utility/security';
+import {errorHandler} from '../../utility/utility';
 
 @inject(LoginApi, Router)
-export class Login {
+export class Register {
   constructor(api, router) {
     this.user = "";
     this.pass = "";
+    this.conf_pass = "";
     this.api = api;
     this.router = router;
 
@@ -30,8 +31,12 @@ export class Login {
     try {
       const cleanUsername = sanitizeLogin(this.user, "username", 6, 32);
       const cleanPassword = sanitizeLogin(this.pass, "password", 8, 18);
-      
-      await this.api.logIn(cleanUsername, cleanPassword);
+
+      if (this.pass === this.conf_pass) {
+        await this.api.addUser(cleanUsername, cleanPassword);
+      } else {
+        document.getElementById('error-text').innerHTML = "Password and Confirm Password did not match.";
+      }
     } catch (err) {
       if (typeof err === 'string'){
         document.getElementById('error-text').innerHTML = err;
@@ -41,8 +46,8 @@ export class Login {
     }
   }
 
-  register() {
-    this.router.navigateToRoute('register');
+  login() {
+    this.router.navigateToRoute('login');
   }
 
   //Allows the user to hit enter to submit the form
@@ -60,7 +65,7 @@ export class Login {
 
     if (char.toUpperCase() === char && char.toLowerCase() !== char && !event.shiftKey) {
       document.getElementById("error-text").innerHTML = "Caps Lock is on.";
-    }else{
+    } else {
       document.getElementById("error-text").innerHTML = "";
     }
   }

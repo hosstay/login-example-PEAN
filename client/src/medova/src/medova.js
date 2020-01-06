@@ -1,6 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {LoginApi} from '../api/login';
+import {LoginApi} from '../../api/login';
 
 @inject(LoginApi, Router)
 export class Medova {
