@@ -63,10 +63,6 @@ export class DataLoader {
       console.log('data');
       console.log(data);
 
-      if (data.status) {
-        data = this.reformatOldEndpoint(data);
-      }
-
       if (data.success) {
         console.log('success');
 
@@ -107,22 +103,5 @@ export class DataLoader {
     } catch (err) {
       return errorHandler({err: err, context: 'httpFetch'});
     }
-  }
-
-  reformatOldEndpoint(data) {
-
-    if (data.status === 'SUCCESS') {
-      data = {
-        success: true,
-        result: data.result
-      };
-    } else {
-      data = {
-        success: false,
-        result: data.message
-      };
-    }
-
-    return data;
   }
 }
