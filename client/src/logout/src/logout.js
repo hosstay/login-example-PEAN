@@ -1,7 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {LoginApi} from '../../api/login';
-import {errorHandler} from '../../utility/utility';
 
 @inject(LoginApi, Router)
 export class Logout {
@@ -25,10 +24,10 @@ export class Logout {
         document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(https://i.imgur.com/bh2ywHi.jpg)';
         this.router.navigateToRoute('home');
       } else {
-        throw 'Something went wrong while logging out.';
+        throw new Error('Something went wrong while logging out.');
       }
     } catch (err) {
-      return errorHandler({err: err, context: 'attached', isLast: true});
+      console.log(err);
     }
   }
 }

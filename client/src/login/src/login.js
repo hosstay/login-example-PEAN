@@ -1,7 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {LoginApi} from '../../api/login';
-import {errorHandler} from '../../utility/utility';
 import {sanitizeLogin} from '../../utility/security';
 
 @inject(LoginApi, Router)
@@ -30,14 +29,11 @@ export class Login {
     try {
       const cleanUsername = sanitizeLogin(this.user, 'username', 6, 32);
       const cleanPassword = sanitizeLogin(this.pass, 'password', 8, 18);
-      
+
       await this.api.logIn(cleanUsername, cleanPassword);
     } catch (err) {
-      if (typeof err === 'string'){
-        document.getElementById('error-text').innerHTML = err;
-      } else {
-        return errorHandler({err: err, context: 'submit', isLast: true});
-      }
+      console.log(err);
+      document.getElementById('error-text').innerHTML = err.message;
     }
   }
 
@@ -45,7 +41,7 @@ export class Login {
     this.router.navigateToRoute('register');
   }
 
-  //Allows the user to hit enter to submit the form
+  // Allows the user to hit enter to submit the form
   handleEnter() {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -53,14 +49,14 @@ export class Login {
     }
   }
 
-  //Informs the user when capslock is on.
+  // Informs the user when capslock is on.
   handleCapsLock(event) {
     event = event || window.event;
     const char = String.fromCharCode(event.keyCode || event.which);
 
     if (char.toUpperCase() === char && char.toLowerCase() !== char && !event.shiftKey) {
       document.getElementById('error-text').innerHTML = 'Caps Lock is on.';
-    }else{
+    } else {
       document.getElementById('error-text').innerHTML = '';
     }
   }

@@ -17,7 +17,7 @@ export class Medova {
         this.router.navigateToRoute('login');
       }
     } catch (err) {
-      return errorHandler({err: err, context: 'attached', isLast: true});
+      console.log(err);
     }
   }
 }

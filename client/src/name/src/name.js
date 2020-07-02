@@ -19,7 +19,7 @@ export class Name {
         this.router.navigateToRoute('login');
       }
     } catch (err) {
-      return errorHandler({err: err, context: 'attached', isLast: true});
+      console.log(err);
     }
   }
 
@@ -27,12 +27,9 @@ export class Name {
     try {
       const cleanInput = sanitize(this.name, 'name', 0, 32);
       document.getElementById('output').innerHTML = `${cleanInput} is awesome!`;
-    } catch(err) {
-      if (typeof err === 'string'){
-        document.getElementById('output').innerHTML = err;
-      } else {
-        return errorHandler({err: err, context: 'submit', isLast: true});
-      }
+    } catch (err) {
+      console.log(err);
+      document.getElementById('output').innerHTML = err.message;
     }
   }
 }

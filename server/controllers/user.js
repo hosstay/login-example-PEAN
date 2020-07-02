@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = module.exports = express.Router();
 
-//app.use(compression());
+// app.use(compression());
 
 const model = require('../models/user');
 

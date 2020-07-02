@@ -21,10 +21,10 @@ function decrypt(data) {
 */
 function sanitize(input, field, minLength, maxLength) {
   if (!input) {
-    throw 'Incorrect username or password.';
+    throw new Error('No input');
   } else {
     if (input.length < minLength || input.length > maxLength) {
-      throw `${field} must be between ${minLength} and ${maxLength} characters.`;
+      throw new Error(`${field} must be between ${minLength} and ${maxLength} characters.`);
     } else {
       return encodeURIComponent(input);
     }
@@ -48,7 +48,7 @@ function sanitizeLogin(input, field, minLength, maxLength) {
   }
 
   if (!regex.test(input)) {
-    throw errorMessage;
+    throw new Error(errorMessage);
   } else {
     return sanitize(input, field, minLength, maxLength);
   }

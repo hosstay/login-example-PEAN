@@ -2,7 +2,6 @@ import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {LoginApi} from '../../api/login';
 import {sanitizeLogin} from '../../utility/security';
-import {errorHandler} from '../../utility/utility';
 
 @inject(LoginApi, Router)
 export class Register {
@@ -38,11 +37,8 @@ export class Register {
         document.getElementById('error-text').innerHTML = 'Password and Confirm Password did not match.';
       }
     } catch (err) {
-      if (typeof err === 'string'){
-        document.getElementById('error-text').innerHTML = err;
-      } else {
-        return errorHandler({err: err, context: 'submit', isLast: true});
-      }
+      console.log(err);
+      document.getElementById('error-text').innerHTML = err.message;
     }
   }
 
@@ -50,7 +46,7 @@ export class Register {
     this.router.navigateToRoute('login');
   }
 
-  //Allows the user to hit enter to submit the form
+  // Allows the user to hit enter to submit the form
   handleEnter() {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -58,7 +54,7 @@ export class Register {
     }
   }
 
-  //Informs the user when capslock is on.
+  // Informs the user when capslock is on.
   handleCapsLock(event) {
     event = event || window.event;
     const char = String.fromCharCode(event.keyCode || event.which);

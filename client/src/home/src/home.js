@@ -1,7 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {LoginApi} from '../../api/login';
-import {errorHandler} from '../../utility/utility';
 
 @inject(LoginApi, Router)
 export class Home {
@@ -18,7 +17,7 @@ export class Home {
         this.router.navigateToRoute('login');
       }
     } catch (err) {
-      return errorHandler({err: err, context: 'attached', isLast: true});
+      console.log(err);
     }
   }
 }

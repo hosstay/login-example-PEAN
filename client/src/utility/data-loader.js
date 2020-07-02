@@ -1,5 +1,4 @@
 import {json}         from 'aurelia-fetch-client';
-import {errorHandler} from './utility';
 import {decrypt}      from './security';
 
 /*
@@ -7,7 +6,7 @@ import {decrypt}      from './security';
   Also allows for easy cacheing.
 
   Usage:
-  
+
   const response = await this.dataLoader.httpFetch({
     httpClient: this.httpClient,
     prefix: 'api/your/prefix/',
@@ -58,62 +57,53 @@ export class DataLoader {
   }
 
   async fetch(options) {
-    try {
-      console.log('-------------------------');
-      console.log('fetching...');
-      console.log(options);
+    console.log('-------------------------');
+    console.log('fetching...');
+    console.log(options);
 
-      const payload = options.payload ? options.payload : {};
+    const payload = options.payload ? options.payload : {};
 
-      let response = await options.httpClient.fetch(options.prefix + options.endpoint, {
-        method: 'post',
-        body: json(payload)
-      });
-      let data = await response.json();
+    const response = await options.httpClient.fetch(options.prefix + options.endpoint, {
+      method: 'post',
+      body: json(payload)
+    });
+    let data = await response.json();
 
-      // console.log('non-decrypted data');
-      // console.log(data);
+    // console.log('non-decrypted data');
+    // console.log(data);
 
-      data = decrypt(data);
+    data = decrypt(data);
 
-      console.log('data');
-      console.log(data);
+    console.log('data');
+    console.log(data);
 
-      if (data.success) {
-        console.log('success');
+    if (data.success) {
+      console.log('success');
 
-        if (options.useCache) {
-          this.addToCache(data.result, options);
-        }
-
-        return data.result;
-      } else {
-        console.log('data.msg');
-        console.log(data.msg);
-
-        throw data.msg;
+      if (options.useCache) {
+        this.addToCache(data.result, options);
       }
-    } catch (err) {
-      return errorHandler({err: err, context: 'fetch'});
+
+      return data.result;
+    } else {
+      console.log('data.msg');
+      console.log(data.msg);
+
+      throw data.msg;
     }
   }
 
   async httpFetch(options) {
+    let cacheIndex = -1;
 
-    try {
-      let cacheIndex = -1;
+    if (options.useCache) {
+      cacheIndex = this.findIndexInCache(options);
+    }
 
-      if (options.useCache) {
-        cacheIndex = this.findIndexInCache(options);
-      }
-
-      if (cacheIndex > -1) {
-        return this.getCacheAtIndex(cacheIndex);
-      } else {
-        return await this.fetch(options);
-      }
-    } catch (err) {
-      return errorHandler({err: err, context: 'httpFetch'});
+    if (cacheIndex > -1) {
+      return this.getCacheAtIndex(cacheIndex);
+    } else {
+      return await this.fetch(options);
     }
   }
 }
