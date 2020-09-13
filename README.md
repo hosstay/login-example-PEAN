@@ -26,6 +26,8 @@ column_name             column_default                data_type              cha
 
 * Install Node
 * Clone the repository
+* Have Aurelia installed globally (npm install aurelia-cli -g)
+* Have Nodemon install globally if you're going to use it (npm install nodemon -g)
 
 ## Running the tests
 
