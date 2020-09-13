@@ -45,6 +45,8 @@ Start Backend: 'node server' or 'nodemon --inspect server' if you have nodemon i
 
 Start Frontend: 'npm start' or 'au run --watch' if you have aurelia cli installed and want it to watch for changes.
 
+Webpage runs at localhost:8080, backend listens on :3000
+
 ## Built With
 
 * [Aurelia](https://aurelia.io/home) - Frontend framework
