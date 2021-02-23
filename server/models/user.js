@@ -72,20 +72,6 @@ async function login(req, res) {
   }
 }
 
-function verifyToken(req, res) {
-  console.log(`req.cookies['SESSIONID']`);
-  console.log(req.cookies['SESSIONID']);
-  const verified = security.verifyJsonToken(req.cookies['SESSIONID']);
-
-  if (verified) {
-    console.log('Token verified');
-    return res.status(200).json(security.encrypt({success: true, result: true}));
-  } else {
-    console.log('Token not verified');
-    return res.status(200).json(security.encrypt({success: true, result: false}));
-  }
-}
-
 function logout(req, res) {
   if (req.cookies['SESSIONID']) {
     console.log('Logged out');
@@ -100,6 +86,5 @@ function logout(req, res) {
 module.exports = {
   createUser: createUser,
   login: login,
-  verifyToken: verifyToken,
   logout: logout
 };

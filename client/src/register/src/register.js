@@ -1,9 +1,9 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {LoginApi} from '../../api/login';
+import {UserApi} from '../../api/user';
 import {sanitizeLogin} from '../../utility/security';
 
-@inject(LoginApi, Router)
+@inject(UserApi, Router)
 export class Register {
   constructor(api, router) {
     this.user = '';

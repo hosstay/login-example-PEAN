@@ -19,6 +19,7 @@ app.all('/*', function(req, res, next) {
 });
 
 app.use(require('./controllers/user'));
+app.use(require('./controllers/security'));
 
 const port = 3000;
 

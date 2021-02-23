@@ -5,7 +5,7 @@ import {DataLoader} from '../utility/data-loader';
 import {timeoutPromise} from '../utility/utility';
 
 @inject(Router, HttpClient, DataLoader)
-export class LoginApi {
+export class UserApi {
   constructor(router, httpClient, dataLoader) {
     this.router = router;
     this.httpClient = httpClient;
@@ -68,16 +68,6 @@ export class LoginApi {
     } else {
       document.getElementById('error-text').innerHTML = response.msg;
     }
-  }
-
-  async verifyToken() {
-    const response = await this.dataLoader.httpFetch({
-      httpClient: this.httpClient,
-      prefix: 'api/secure/',
-      endpoint: 'verify'
-    });
-
-    return response;
   }
 
   async logout() {

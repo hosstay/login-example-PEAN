@@ -9,4 +9,3 @@ const model = require('../models/user');
 app.post('/api/user/create', model.createUser);
 app.post('/api/user/login', model.login);
 app.post('/api/user/logout', model.logout);
-app.post('/api/secure/verify', model.verifyToken);
