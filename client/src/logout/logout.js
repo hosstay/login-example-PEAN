@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {SecurityApi} from '../../api/security';
-import {UserApi} from '../../api/user';
+import {SecurityApi} from '../api/security';
+import {UserApi} from '../api/user';
 
 @inject(SecurityApi, UserApi, Router)
 export class Logout {
