@@ -13,8 +13,6 @@ export class Login {
     this.userApi = userApi;
     this.aurelia = aurelia;
     this.router = router;
-
-    // document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(./healthy.jpg)';
   }
 
   async attached() {
