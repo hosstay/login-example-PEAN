@@ -9,17 +9,6 @@ export class SecurityApi {
     this.router = router;
     this.httpClient = httpClient;
     this.dataLoader = dataLoader;
-
-    const baseUrl = location.protocol + '//' + window.location.hostname + ':3000/';
-    this.httpClient.configure((config) => {
-      config
-          .useStandardConfiguration()
-          .withBaseUrl(baseUrl)
-          .withDefaults({
-            credentials: 'include',
-            mode: 'cors'
-          });
-    });
   }
 
   async verifyToken() {

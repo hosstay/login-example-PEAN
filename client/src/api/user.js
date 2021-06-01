@@ -11,17 +11,6 @@ export class UserApi {
     this.aurelia = aurelia;
     this.httpClient = httpClient;
     this.dataLoader = dataLoader;
-
-    const baseUrl = location.protocol + '//' + window.location.hostname + ':3000/';
-    this.httpClient.configure((config) => {
-      config
-          .useStandardConfiguration()
-          .withBaseUrl(baseUrl)
-          .withDefaults({
-            credentials: 'include',
-            mode: 'cors'
-          });
-    });
   }
 
   async logIn(user, pass) {
