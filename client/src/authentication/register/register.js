@@ -1,17 +1,18 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {UserApi} from '../api/user';
-import {sanitizeLogin} from '../utility/security';
+import {UserApi} from '../../api/user';
+import {sanitizeLogin} from '../../utility/security';
 
 @inject(UserApi, Router)
-export class Login {
+export class Register {
   constructor(api, router) {
     this.user = '';
     this.pass = '';
+    this.conf_pass = '';
     this.api = api;
     this.router = router;
 
-    // document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(./healthy.jpg)';
+    document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(https://i.imgur.com/bh2ywHi.jpg)';
   }
 
   attached() {
@@ -30,15 +31,19 @@ export class Login {
       const cleanUsername = sanitizeLogin(this.user, 'username', 6, 32);
       const cleanPassword = sanitizeLogin(this.pass, 'password', 8, 18);
 
-      await this.api.logIn(cleanUsername, cleanPassword);
+      if (this.pass === this.conf_pass) {
+        await this.api.addUser(cleanUsername, cleanPassword);
+      } else {
+        document.getElementById('error-text').innerHTML = 'Password and Confirm Password did not match.';
+      }
     } catch (err) {
       console.log(err);
       document.getElementById('error-text').innerHTML = err.message;
     }
   }
 
-  register() {
-    this.router.navigateToRoute('register');
+  login() {
+    this.router.navigateToRoute('login');
   }
 
   // Allows the user to hit enter to submit the form

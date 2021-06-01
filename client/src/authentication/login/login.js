@@ -1,21 +1,29 @@
-import {inject} from 'aurelia-framework';
+import {inject, Aurelia} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {UserApi} from '../api/user';
-import {sanitizeLogin} from '../utility/security';
+import {UserApi} from '../../api/user';
+import {SecurityApi} from '../../api/security';
+import {sanitizeLogin} from '../../utility/security';
 
-@inject(UserApi, Router)
-export class Register {
-  constructor(api, router) {
+@inject(SecurityApi, UserApi, Aurelia, Router)
+export class Login {
+  constructor(securityApi, userApi, aurelia, router) {
     this.user = '';
     this.pass = '';
-    this.conf_pass = '';
-    this.api = api;
+    this.securityApi = securityApi;
+    this.userApi = userApi;
+    this.aurelia = aurelia;
     this.router = router;
 
-    document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(https://i.imgur.com/bh2ywHi.jpg)';
+    // document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(./healthy.jpg)';
   }
 
-  attached() {
+  async attached() {
+    if (await this.securityApi.verifyToken()) {
+      console.log('verified');
+      this.router.navigate('', {replace: true, trigger: false});
+      return this.aurelia.setRoot(PLATFORM.moduleName('homepage/main'));
+    }
+
     document.addEventListener('keyup', this.handleEnter);
     document.addEventListener('keypress', this.handleCapsLock);
     document.getElementById('username').focus();
@@ -31,19 +39,15 @@ export class Register {
       const cleanUsername = sanitizeLogin(this.user, 'username', 6, 32);
       const cleanPassword = sanitizeLogin(this.pass, 'password', 8, 18);
 
-      if (this.pass === this.conf_pass) {
-        await this.api.addUser(cleanUsername, cleanPassword);
-      } else {
-        document.getElementById('error-text').innerHTML = 'Password and Confirm Password did not match.';
-      }
+      await this.userApi.logIn(cleanUsername, cleanPassword);
     } catch (err) {
       console.log(err);
       document.getElementById('error-text').innerHTML = err.message;
     }
   }
 
-  login() {
-    this.router.navigateToRoute('login');
+  register() {
+    this.router.navigateToRoute('register');
   }
 
   // Allows the user to hit enter to submit the form

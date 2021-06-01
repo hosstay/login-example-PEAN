@@ -1,13 +1,14 @@
-import {inject} from 'aurelia-framework';
+import {inject, Aurelia} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-fetch-client';
 import {DataLoader} from '../utility/data-loader';
 import {timeoutPromise} from '../utility/utility';
 
-@inject(Router, HttpClient, DataLoader)
+@inject(Router, Aurelia, HttpClient, DataLoader)
 export class UserApi {
-  constructor(router, httpClient, dataLoader) {
+  constructor(router, aurelia, httpClient, dataLoader) {
     this.router = router;
+    this.aurelia = aurelia;
     this.httpClient = httpClient;
     this.dataLoader = dataLoader;
 
@@ -40,7 +41,8 @@ export class UserApi {
       await timeoutPromise(2000);
 
       document.getElementsByTagName('BODY')[0].style.backgroundImage = 'none';
-      return this.router.navigateToRoute('home');
+      this.router.navigate('', {replace: true, trigger: false});
+      return this.aurelia.setRoot(PLATFORM.moduleName('homepage/main'));
     } else {
       document.getElementById('error-text').innerHTML = response.msg;
     }
