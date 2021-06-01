@@ -1,21 +1,18 @@
 import {inject, Aurelia} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {HttpClient} from 'aurelia-fetch-client';
 import {DataLoader} from '../utility/data-loader';
 import {timeoutPromise} from '../utility/utility';
 
-@inject(Router, Aurelia, HttpClient, DataLoader)
+@inject(Router, Aurelia, DataLoader)
 export class UserApi {
-  constructor(router, aurelia, httpClient, dataLoader) {
+  constructor(router, aurelia, dataLoader) {
     this.router = router;
     this.aurelia = aurelia;
-    this.httpClient = httpClient;
     this.dataLoader = dataLoader;
   }
 
   async logIn(user, pass) {
     const response = await this.dataLoader.httpFetch({
-      httpClient: this.httpClient,
       prefix: 'api/user/',
       endpoint: 'login',
       payload: {
@@ -39,7 +36,6 @@ export class UserApi {
 
   async addUser(user, pass) {
     const response = await this.dataLoader.httpFetch({
-      httpClient: this.httpClient,
       prefix: 'api/user/',
       endpoint: 'create',
       payload: {
@@ -63,7 +59,6 @@ export class UserApi {
 
   async logout() {
     const response = await this.dataLoader.httpFetch({
-      httpClient: this.httpClient,
       prefix: 'api/user/',
       endpoint: 'logout'
     });

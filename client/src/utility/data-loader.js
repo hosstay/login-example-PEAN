@@ -1,5 +1,7 @@
-import {json}         from 'aurelia-fetch-client';
-import {decrypt}      from './security';
+import {inject} from 'aurelia-framework';
+import {HttpClient, json} from 'aurelia-fetch-client';
+import {errorHandler, debugLog} from './utility';
+import {decrypt} from './security';
 
 /*
   Class for easy fetching using the decrypt & check success pattern.
@@ -8,7 +10,6 @@ import {decrypt}      from './security';
   Usage:
 
   const response = await this.dataLoader.httpFetch({
-    httpClient: this.httpClient,
     prefix: 'api/your/prefix/',
     endpoint: endpoint,
     payload: {
@@ -17,10 +18,14 @@ import {decrypt}      from './security';
     useCache: true,
     customCacheName: endpoint + '/' + customNamePostfix
   });
+
+  if result returned back has noDecrypt = true, doesn't decrypt result
 */
 
+@inject(HttpClient)
 export class DataLoader {
-  constructor() {
+  constructor(httpClient) {
+    this.httpClient = httpClient;
     this.cache = [];
   }
 
@@ -43,67 +48,85 @@ export class DataLoader {
 
   findIndexInCache(options) {
     const list = this.cache;
-    let index = -1;
     const endpoint = options.customCacheName === undefined ? options.endpoint : options.customCacheName;
 
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].name === endpoint) {
-        index = i;
-        break;
-      }
-    }
+    const index = list.findIndex((item) => {
+      return item.name === endpoint;
+    });
 
     return index;
   }
 
   async fetch(options) {
-    console.log('-------------------------');
-    console.log('fetching...');
-    console.log(options);
+    try {
+      debugLog('-------------------------');
+      debugLog('fetching...');
+      debugLog(options);
 
-    const payload = options.payload ? options.payload : {};
-
-    const response = await options.httpClient.fetch(options.prefix + options.endpoint, {
-      method: 'post',
-      body: json(payload)
-    });
-    let data = await response.json();
-
-    // console.log('non-decrypted data');
-    // console.log(data);
-
-    data = decrypt(data);
-
-    console.log('data');
-    console.log(data);
-
-    if (data.success) {
-      console.log('success');
-
-      if (options.useCache) {
-        this.addToCache(data.result, options);
+      if (!options.payload) {
+        options.payload = {};
       }
 
-      return data.result;
-    } else {
-      console.log('data.msg');
-      console.log(data.msg);
+      if (options.db) {
+        options.payload.db = options.db;
+      }
 
-      throw data.msg;
+      const response = await this.httpClient.fetch(options.prefix + options.endpoint, {
+        method: 'post',
+        body: json(options.payload)
+      });
+      let data = await response.json();
+
+      // debugLog('non-decrypted data');
+      // debugLog(data);
+
+      if (data && data.noDecrypt) {
+        data = data;
+      } else {
+        data = decrypt(data);
+      }
+
+      debugLog('data');
+      debugLog(data);
+
+      if (data.success) {
+        debugLog('success');
+
+        if (options.useCache) {
+          this.addToCache(data.result, options);
+        }
+
+        return data.result;
+      } else {
+        debugLog('data.result');
+        debugLog(data.result);
+
+        if (data.result) {
+          return errorHandler({err: data.result, context: 'fetch failure'});
+        } else {
+          throw 'Error loading data:' + JSON.stringify(data.result);
+        }
+      }
+    } catch (err) {
+      return errorHandler({err: err, context: 'fetch'});
     }
   }
 
   async httpFetch(options) {
-    let cacheIndex = -1;
+    try {
+      let cacheIndex = -1;
 
-    if (options.useCache) {
-      cacheIndex = this.findIndexInCache(options);
-    }
+      if (options.useCache) {
+        cacheIndex = this.findIndexInCache(options);
+      }
 
-    if (cacheIndex > -1) {
-      return this.getCacheAtIndex(cacheIndex);
-    } else {
-      return await this.fetch(options);
+      if (cacheIndex > -1) {
+        return this.getCacheAtIndex(cacheIndex);
+      } else {
+        return await this.fetch(options);
+      }
+    } catch (err) {
+      return errorHandler({err: err, context: 'httpFetch'});
     }
   }
 }
