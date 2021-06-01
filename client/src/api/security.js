@@ -31,16 +31,4 @@ export class SecurityApi {
 
     return response;
   }
-
-  async verifyTokenOrLogin() {
-    try {
-      const hasToken = await this.verifyToken();
-
-      if (!hasToken) {
-        this.router.navigateToRoute('login');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
 }
