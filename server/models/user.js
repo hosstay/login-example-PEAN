@@ -1,6 +1,9 @@
+const bcrypt = require('bcryptjs');
 const db = require('../database/database');
 const security = require('../security/security');
-const bcrypt = require('bcryptjs');
+const util = require('../utility/utility');
+
+const DEFAULT_ERROR_MESSAGE = 'Something went wrong';
 
 // creates hash seed
 const salt = bcrypt.genSaltSync(5);
@@ -32,8 +35,8 @@ async function createUser(req, res) {
 
     return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
   } catch (err) {
-    console.log(err);
-    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: err.message}}));
+    util.errorHandler({err: err, context: 'createUser', isLast: true});
+    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: DEFAULT_ERROR_MESSAGE}}));
   }
 }
 
@@ -67,8 +70,8 @@ async function login(req, res) {
     res.cookie('SESSIONID', sessionToken, {expires: new Date(Date.now() + 900000)}); // , httpOnly:true, secure:true});
     return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
   } catch (err) {
-    console.log(err);
-    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: err.message}}));
+    util.errorHandler({err: err, context: 'login', isLast: true});
+    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: DEFAULT_ERROR_MESSAGE}}));
   }
 }
 

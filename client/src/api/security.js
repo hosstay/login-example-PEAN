@@ -1,5 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {DataLoader} from '../utility/data-loader';
+import {errorHandler} from '../utility/utility';
 
 @inject(DataLoader)
 export class SecurityApi {
@@ -8,11 +9,15 @@ export class SecurityApi {
   }
 
   async verifyToken() {
-    const response = await this.dataLoader.httpFetch({
-      prefix: 'api/security/',
-      endpoint: 'verifyToken'
-    });
+    try {
+      const response = await this.dataLoader.httpFetch({
+        prefix: 'api/security/',
+        endpoint: 'verifyToken'
+      });
 
-    return response;
+      return response;
+    } catch (err) {
+      return errorHandler({err: err, context: 'verifyToken'});
+    }
   }
 }

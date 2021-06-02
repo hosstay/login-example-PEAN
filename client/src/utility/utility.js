@@ -45,21 +45,21 @@ function errorHandler(errObj) {
   if (isLast) {
     let output = '';
 
-    for (const i in errArr) {
-      if (typeof errArr[i] === 'object') { // if item is err obj
-        if (errArr[i].stack !== undefined) { // if err obj has .stack property (edge doesn't)
-          output += errArr[i].stack + '\n';
-        } else if (errArr[i].message !== undefined) { // if is err obj
-          output += errArr[i].message + '\n';
+    errArr.forEach((err) => {
+      if (typeof err === 'object') { // if item is err obj
+        if (err.stack !== undefined) { // if err obj has .stack property (edge doesn't)
+          output += err.stack + '\n';
+        } else if (err.message !== undefined) { // if is err obj
+          output += err.message + '\n';
         } else { // if is fetch response obj or other unidentified obj
-          for (const j in errArr[i]) {
-            output += j + ': ' + errArr[i][j] + '\n';
-          }
+          err.forEach((subErr, i) => {
+            output += `${i}: ${subErr}\n`;
+          });
         }
       } else { // if item is string
-        output += errArr[i] + '\n';
+        output += err + '\n';
       }
-    }
+    });
 
     console.log(output);
     return output;
@@ -78,7 +78,7 @@ function errorHandler(errObj) {
  * @param {string} string - text to log
  */
 function debugLog(string) {
-  const DEBUG = false;
+  const DEBUG = true;
 
   if (DEBUG) {
     console.log(string);

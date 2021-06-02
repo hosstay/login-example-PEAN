@@ -101,11 +101,7 @@ export class DataLoader {
         debugLog('data.result');
         debugLog(data.result);
 
-        if (data.result) {
-          return errorHandler({err: data.result, context: 'fetch failure'});
-        } else {
-          throw 'Error loading data:' + JSON.stringify(data.result);
-        }
+        return errorHandler({err: data.result, context: 'fetch failure'});
       }
     } catch (err) {
       return errorHandler({err: err, context: 'fetch'});

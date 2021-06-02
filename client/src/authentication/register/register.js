@@ -1,68 +1,42 @@
-import {inject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {UserApi} from '../../api/user';
+import {AuthenticationRoute} from '../components/authentication_route/authentication-route';
 import {sanitizeLogin} from '../../utility/security';
+import {errorHandler} from '../../utility/utility';
 
-@inject(UserApi, Router)
-export class Register {
-  constructor(api, router) {
+export class Register extends AuthenticationRoute {
+  constructor(...rest) {
+    super(...rest);
+
     this.user = '';
     this.pass = '';
     this.conf_pass = '';
-    this.api = api;
-    this.router = router;
-
-    document.getElementsByTagName('BODY')[0].style.backgroundImage = 'url(https://i.imgur.com/bh2ywHi.jpg)';
-  }
-
-  attached() {
-    document.addEventListener('keyup', this.handleEnter);
-    document.addEventListener('keypress', this.handleCapsLock);
-    document.getElementById('username').focus();
-  }
-
-  detached() {
-    document.removeEventListener('keyup', this.handleEnter);
-    document.removeEventListener('keypress', this.handleCapsLock);
   }
 
   async submit() {
     try {
-      const cleanUsername = sanitizeLogin(this.user, 'username', 6, 32);
-      const cleanPassword = sanitizeLogin(this.pass, 'password', 8, 18);
+      let cleanUsername = '';
+      let cleanPassword = '';
 
-      if (this.pass === this.conf_pass) {
-        await this.api.addUser(cleanUsername, cleanPassword);
-      } else {
-        document.getElementById('error-text').innerHTML = 'Password and Confirm Password did not match.';
+      try {
+        cleanUsername = sanitizeLogin(this.user, 'username', 6, 32);
+        cleanPassword = sanitizeLogin(this.pass, 'password', 8, 18);
+      } catch (err) {
+        document.getElementById('error-text').innerHTML = err.message;
+      }
+
+      if (cleanUsername !== '' && cleanPassword !== '') {
+        if (this.pass === this.conf_pass) {
+          await this.userApi.addUser(cleanUsername, cleanPassword);
+        } else {
+          document.getElementById('error-text').innerHTML = 'Password and Confirm Password did not match.';
+        }
       }
     } catch (err) {
-      console.log(err);
-      document.getElementById('error-text').innerHTML = err.message;
+      document.getElementById('error-text').innerHTML = 'Something went wrong';
+      return errorHandler({err: err, context: 'submit', isLast: true});
     }
   }
 
   login() {
     this.router.navigateToRoute('login');
-  }
-
-  // Allows the user to hit enter to submit the form
-  handleEnter() {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      document.getElementById('submit-button').click();
-    }
-  }
-
-  // Informs the user when capslock is on.
-  handleCapsLock(event) {
-    event = event || window.event;
-    const char = String.fromCharCode(event.keyCode || event.which);
-
-    if (char.toUpperCase() === char && char.toLowerCase() !== char && !event.shiftKey) {
-      document.getElementById('error-text').innerHTML = 'Caps Lock is on.';
-    } else {
-      document.getElementById('error-text').innerHTML = '';
-    }
   }
 }

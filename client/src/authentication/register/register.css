@@ -1,3 +1,9 @@
+#background-img {
+  height: 100vh;
+  width: 100vw;
+  margin-left: -0.5vw;
+}
+
 #register-div {
   border-style: solid;
   background-color: #f2f2f2;
