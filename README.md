@@ -31,13 +31,9 @@ column_name             column_default                data_type              cha
 
 ## Running the tests
 
-TODO: Make test code
+Run tests via command: 'npm run test'
 
-TODO: Explain how to run the automated tests
-
-### Break down of tests
-
-TODO: Explain what these tests test and why
+TODO: Write more tests
 
 ## Deployment
 

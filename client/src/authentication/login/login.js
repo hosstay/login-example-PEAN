@@ -2,6 +2,7 @@ import {AuthenticationRoute} from '../components/authentication_route/authentica
 import {inject, Aurelia} from 'aurelia-framework';
 import {SecurityApi} from '../../api/security';
 import {sanitizeLogin} from '../../utility/security';
+import {errorHandler} from '../../utility/utility';
 
 @inject(SecurityApi, Aurelia)
 export class Login extends AuthenticationRoute {
@@ -15,9 +16,13 @@ export class Login extends AuthenticationRoute {
   }
 
   async afterAttached() {
-    if (await this.securityApi.verifyToken()) {
-      this.router.navigate('', {replace: true, trigger: false});
-      return this.aurelia.setRoot(PLATFORM.moduleName('homepage/main'));
+    try {
+      if (await this.securityApi.verifyToken()) {
+        this.router.navigate('', {replace: true, trigger: false});
+        return this.aurelia.setRoot(PLATFORM.moduleName('homepage/main'));
+      }
+    } catch (err) {
+      errorHandler({err: err, context: 'afterAttached', isLast: true});
     }
   }
 
@@ -28,8 +33,8 @@ export class Login extends AuthenticationRoute {
 
       await this.userApi.logIn(cleanUsername, cleanPassword);
     } catch (err) {
-      console.log(err);
       document.getElementById('error-text').innerHTML = err.message;
+      errorHandler({err: err, context: 'submit', isLast: true});
     }
   }
 

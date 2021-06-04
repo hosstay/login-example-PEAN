@@ -4,13 +4,13 @@ import pako from 'pako';
 function encrypt(data) {
   let result = pako.deflate(JSON.stringify(data), {to: 'string'});
   result = (cryptoJs.AES.encrypt(result, '8184')).toString();
-  return (result);
+  return result;
 }
 
 function decrypt(data) {
   let result = (cryptoJs.AES.decrypt(data, '8184').toString(cryptoJs.enc.Utf8));
   result = JSON.parse(pako.inflate(result, {to: 'string'}));
-  return (result);
+  return result;
 }
 
 /*
@@ -45,6 +45,9 @@ function sanitizeLogin(input, field, minLength, maxLength) {
   } else if (field === 'password') {
     regex = RegExp(/^(?=(?:\S*\d))(?=(?:\S*[A-Za-z]))(?=\S*[^A-Za-z0-9])\S{8,}/);
     errorMessage = 'Password should have a minimum of 8 characters, at least 1 Uppercase Letter, 1 Lowercase Letter, 1 Number, and 1 Special Character.';
+  } else {
+    console.log('Field parameter must be username or password');
+    throw new Error('Something went wrong');
   }
 
   if (!regex.test(input)) {

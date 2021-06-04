@@ -35,7 +35,7 @@ function errorHandler(errObj) {
   if (typeof err === 'string') {
     errArr.push(err); // case where string is explicitly thrown
   } else if (err[0] !== undefined) {
-    errArr = err; // case where it's the array we're passing foward
+    errArr = err; // case where it's the array we're passing forward
   } else {
     errArr.push(err); // case where a inexplicit error is thrown
   }
@@ -51,7 +51,7 @@ function errorHandler(errObj) {
           output += err.stack + '\n';
         } else if (err.message !== undefined) { // if is err obj
           output += err.message + '\n';
-        } else { // if is fetch response obj or other unidentified obj
+        } else { // if array err (most likely from db error) or unidentified error.
           err.forEach((subErr, i) => {
             output += `${i}: ${subErr}\n`;
           });
@@ -73,16 +73,12 @@ function errorHandler(errObj) {
 }
 
 /**
- * Provides a console.log interface that only prints when debugging is true.
+ * Provides a console.log interface that only prints when uncommented
  *
  * @param {string} string - text to log
  */
 function debugLog(string) {
-  const DEBUG = true;
-
-  if (DEBUG) {
-    console.log(string);
-  }
+  console.log(string);
 }
 
 /**
@@ -93,14 +89,9 @@ function debugLog(string) {
  */
 function timeoutPromise(ms) {
   return new Promise((resolve, reject) => {
-    try {
-      setTimeout(() => {
-        return resolve(true);
-      }, ms);
-    } catch (err) {
-      console.log(err);
-      reject(err);
-    }
+    setTimeout(() => {
+      return resolve(true);
+    }, ms);
   });
 }
 
