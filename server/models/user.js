@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
-const db = require('../database/database');
+const Database = require('../database/database');
 const security = require('../security/security');
 const util = require('../utility/utility');
+
+const db = new Database();
 
 const DEFAULT_ERROR_MESSAGE = 'Something went wrong';
 
@@ -15,22 +17,16 @@ async function createUser(req, res) {
 
     const hashedPassword = bcrypt.hashSync(cleanPassword, salt);
 
-    const result = await db.query(
-        'SELECT * FROM users WHERE username=?',
-        {
-          replacements: [cleanUsername],
-          type: db.QueryTypes.SELECT
-        }
+    const result = await db.paramQuery(
+        'SELECT * FROM users WHERE username=$1',
+        [cleanUsername]
     );
 
     if (result !== undefined && result.length !== 0) throw new Error('Username already exists.');
 
-    await db.query(
-        'INSERT INTO users (username, password) VALUES (?, ?)',
-        {
-          replacements: [cleanUsername, hashedPassword],
-          type: db.QueryTypes.SELECT
-        }
+    await db.paramQuery(
+        'INSERT INTO users (username, password) VALUES ($1, $2)',
+        [cleanUsername, hashedPassword]
     );
 
     return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
@@ -47,12 +43,9 @@ async function login(req, res) {
 
     const submittedPassword = cleanPassword;
 
-    const result = await db.query(
-        'SELECT * FROM users WHERE username=?',
-        {
-          replacements: [cleanUsername],
-          type: db.QueryTypes.SELECT
-        }
+    const result = await db.paramQuery(
+        'SELECT * FROM users WHERE username=$1',
+        [cleanUsername]
     );
 
     if (result.length === 0) throw new Error('Incorrect username or password.');

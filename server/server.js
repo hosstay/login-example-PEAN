@@ -2,7 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const app = express();
 const bodyParser = require('body-parser');
-const db = require('./database/database');
+const http = require('http');
 
 app.use(bodyParser.json()); // parses any json we're sent
 app.use(bodyParser.urlencoded({extended: true})); // this allows us to send data via Postman
@@ -23,9 +23,6 @@ app.use(require('./controllers/security'));
 
 const port = 3000;
 
-// interact with database and front end
-db.sync().then(function() { // sync up with the database before continuing
-  app.listen(port, function() { // listen for interactions from app on port 3000
-    console.log(`Listening on port ${port}.`);
-  });
+http.createServer(app).listen(port, function(err) {
+  console.log('listening on port ' + port);
 });
