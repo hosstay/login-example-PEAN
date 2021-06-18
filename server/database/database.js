@@ -5,10 +5,10 @@ const util = require('../utility/utility');
 class Database {
   constructor() {
     this.clientConfig = {
-      user: 'dbuser',
-      host: 'localhost',
-      database: 'test-website',
-      password: 'dbuser',
+      user: 'docker',
+      host: 'db',
+      database: 'docker',
+      password: 'docker',
       port: '5432'
     };
 

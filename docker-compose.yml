@@ -1,0 +1,37 @@
+  
+version: '3.7'
+
+services:
+  db:
+    image: postgres:13.3
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: docker
+    volumes:
+      - postgres_data:/var/lib/pgsql/data
+  server:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/code
+      - /code/node_modules
+    depends_on:
+      - db
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./client:/code
+      - /code/node_modules
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:
