@@ -43,7 +43,7 @@ TODO: Write more tests
 Docker:
 
 * For Development Environment: run 'docker-compose -f docker-compose.dev.yml up --build'
-* For Prodction Environment: run 'docker-compose -f docker-compose.prod.yml up --build'
+* For Production Environment: run 'docker-compose -f docker-compose.prod.yml up --build'
 
 Non-Docker:
 
