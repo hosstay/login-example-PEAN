@@ -1,13 +1,5 @@
 <template>
   <require from="../components/homepage_route/homepage-route.html"></require>
   <homepage-route></homepage-route>
-  <label>Enter Name:</label>
-  <input id="name" type="text" size="32" value.bind="name">
-  <br />
-  <br />
-
-  <input type="button" value="Submit" click.delegate="submit()">
-  <br />
-
-  <p id="output"></p>
+  <compose view-model="../components/name_form/name-form" model.bind="nameFormObj"></compose>
 </template>
