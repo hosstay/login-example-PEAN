@@ -1,5 +1,5 @@
 # use latest version of nodejs
-FROM node:lts-alpine
+FROM node:lts-alpine as build-stage
 
 # install aurelia-cli to build the app
 RUN npm i -g aurelia-cli
@@ -14,6 +14,15 @@ RUN npm install
 
 # copy the rest of files and folders & install dependencies
 COPY . ./
+RUN npm run build
 
-EXPOSE 8080
-CMD ["au", "run", "--watch", "--host", "0.0.0.0"]
+# use nginx as the http server to serve contents
+FROM nginx:alpine as production-stage
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+WORKDIR /usr/share/nginx/html
+
+# copy files from previous container/stage into the new one
+# from /app/dist to working directory
+COPY --from=build-stage /code/dist ./
+EXPOSE 80
+CMD ["nginx"]

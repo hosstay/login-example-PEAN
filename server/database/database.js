@@ -15,6 +15,14 @@ class Database {
     this.client;
   }
 
+  async init() {
+    try {
+      await this.query('CREATE TABLE IF NOT EXISTS users (id serial, username varchar(40), password varchar(200))');
+    } catch (err) {
+      util.errorHandler({err: err, context: 'init'});
+    }
+  }
+
   async query(query) {
     try {
       this.client = new Client(this.clientConfig);

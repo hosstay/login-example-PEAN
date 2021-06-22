@@ -1,9 +1,6 @@
 const bcrypt = require('bcryptjs');
-const Database = require('../database/database');
 const security = require('../security/security');
 const util = require('../utility/utility');
-
-const db = new Database();
 
 const DEFAULT_ERROR_MESSAGE = 'Something went wrong';
 
@@ -38,18 +35,15 @@ async function createUser(req, res) {
 
 async function login(req, res) {
   try {
-    console.log('in login');
     const cleanUsername = security.sanitize(req.body.username, 'username', 6, 32);
     const cleanPassword = security.sanitize(req.body.password, 'password', 8, 18);
 
     const submittedPassword = cleanPassword;
 
-    console.log('right before query');
     const result = await db.paramQuery(
         'SELECT * FROM users WHERE username=$1',
         [cleanUsername]
     );
-    console.log('right after query');
 
     if (result.length === 0) throw new Error('Incorrect username or password.');
 

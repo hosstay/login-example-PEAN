@@ -1,33 +1,36 @@
 # Full Stack Login Example
 
-An implementation of a website with login using Aurelia, Node, Express, & Postgresql as well as various other libraries to get everything working together (check the package.json files in the client and server folders for the full list).
+An implementation of a website with login using Aurelia, Node, Express, & Postgresql
+
+NEW: Docker implementation
 
 ## Getting Started
 
 ### Prerequisites
 
-Have Node installed
+Docker:
 
-I've included the node modules in the repo for simplicities sake. 
+* Have docker and docker-compose installed
+
+Non-Docker:
+
+* Have Node installed
 
 ### Database
 
-Table 'users'
-
-column_name             column_default                data_type              character_maximum_length
-
-'id'          'nextval('users_id_seq'::regclass)'	    'integer'	                     null
-
-'username'                   null                 'character varying'	                40
-
-'password'	                 null                 'character varying'	               200
+Database table spec included in db.init(). Auto-creates by default.
 
 ### Installing
 
+Docker:
+* Install 'docker' and 'docker-compose'
+
+Non-Docker:
+
 * Install Node
 * Clone the repository
-* Have Aurelia installed globally (npm install aurelia-cli -g)
-* Have Nodemon install globally if you're going to use it (npm install nodemon -g)
+* Install Aurelia globally (npm install aurelia-cli -g)
+* Install Nodemon globally if you're going to use it (npm install nodemon -g)
 
 ## Running the tests
 
@@ -36,6 +39,13 @@ Run tests via command: 'npm run test'
 TODO: Write more tests
 
 ## Deployment
+
+Docker:
+
+* For Development Environment: run 'docker-compose -f docker-compose.dev.yml up --build'
+* For Prodction Environment: run 'docker-compose -f docker-compose.prod.yml up --build'
+
+Non-Docker:
 
 Start Backend: 'node server' or 'nodemon --inspect server' if you have nodemon installed and want dedicated devtools.
 
@@ -48,6 +58,7 @@ Webpage runs at localhost:8080, backend listens on :3000
 * [Aurelia](https://aurelia.io/home) - Frontend framework
 * [Node](https://nodejs.org/en/download/) - Backend framework
 * [NPM](https://www.npmjs.com/) - Dependency Management
+* [Docker](https://www.docker.com/) - Containerization
 
 ## Authors
 
