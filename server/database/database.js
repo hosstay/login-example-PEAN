@@ -1,38 +1,49 @@
-const {Client} = require('pg');
+const {Pool} = require('pg');
 
 const util = require('../utility/utility');
 
 class Database {
   constructor() {
-    this.clientConfig = {
-      user: 'docker',
+    this.poolConfig = {
       host: 'db',
+      user: 'docker',
       database: 'docker',
       password: 'docker',
-      port: '5432'
+      port: '5432',
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000
     };
 
-    this.client;
+    this.pool;
   }
 
   async init() {
     try {
+      this.pool = new Pool(this.poolConfig);
+
       await this.query('CREATE TABLE IF NOT EXISTS users (id serial, username varchar(40), password varchar(200))');
     } catch (err) {
       util.errorHandler({err: err, context: 'init'});
     }
   }
 
+  async teardown() {
+    try {
+      this.pool.end();
+    } catch (err) {
+      util.errorHandler({err: err, context: 'teardown'});
+    }
+  }
+
   async query(query) {
     try {
-      this.client = new Client(this.clientConfig);
+      const client = await this.pool.connect();
 
-      await this.client.connect();
-
-      let results = await this.client.query(query);
+      let results = await client.query(query);
       results = results.length ? results[results.length - 1].rows : results.rows;
 
-      await this.client.end();
+      client.release();
 
       return results;
     } catch (err) {
@@ -42,14 +53,12 @@ class Database {
 
   async paramQuery(query, values) {
     try {
-      this.client = new Client(this.clientConfig);
+      const client = await this.pool.connect();
 
-      await this.client.connect();
-
-      let results = await this.client.query(query, values);
+      let results = await client.query(query, values);
       results = results.length ? results[results.length - 1].rows : results.rows;
 
-      await this.client.end();
+      client.release();
 
       return results;
     } catch (err) {
