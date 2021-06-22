@@ -1,6 +1,7 @@
 <template>
+  <require from="./components/validation_input/validation-input"></require>
   <label>${labelText}</label>
-  <input id="name" type="text" size="32" value.bind="name">
+  <validation-input params.bind="nameValidators"></validation-input>
   <br />
   <br />
   

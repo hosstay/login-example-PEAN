@@ -1,0 +1,4 @@
+<template>
+  <input if.bind="params.type !== 'textarea'" id="${params.id}" class="${params.class}" autocomplete="no">
+  <textarea if.bind="params.type === 'textarea'" id="${params.id}" class="${params.class}"></textarea>
+</template>

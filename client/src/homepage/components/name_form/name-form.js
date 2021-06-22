@@ -1,9 +1,19 @@
 import {sanitize} from '../../../utility/security';
+import {
+  charLetterValidator,
+  pasteLetterValidator
+} from './components/validation_input/validators/validators';
 
 export class NameForm {
   constructor() {
-    this.name;
     this.labelText;
+
+    this.name;
+    this.nameValidators = {
+      id: 'name',
+      onInput: charLetterValidator,
+      onPaste: pasteLetterValidator
+    };
   }
 
   activate(params) {
@@ -12,7 +22,7 @@ export class NameForm {
 
   submit() {
     try {
-      const cleanInput = sanitize(this.name, 'name', 0, 32);
+      const cleanInput = sanitize(document.getElementById(this.nameValidators.id).value, 'name', 0, 32);
       document.getElementById('output').innerHTML = `${cleanInput} is awesome!`;
     } catch (err) {
       console.log(err);
