@@ -1,4 +1,4 @@
-# Full Stack Login Example
+# Login Example PEAN
 
 An implementation of a website with login using PEAN (I made this up) (Postgres, Express, Aurelia, & Node) built in docker
 
