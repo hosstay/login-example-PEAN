@@ -1,8 +1,6 @@
 # Full Stack Login Example
 
-An implementation of a website with login using Aurelia, Node, Express, & Postgresql
-
-NEW: Docker implementation
+An implementation of a website with login using PEAN (I made this up) (Postgres, Express, Aurelia, & Node) built in docker
 
 ## Getting Started
 
@@ -42,8 +40,8 @@ TODO: Write more tests
 
 Docker:
 
-* For Development Environment: run 'docker-compose -f docker-compose.dev.yml up --build'
-* For Production Environment: run 'docker-compose -f docker-compose.prod.yml up --build'
+* For Development Environment: run 'docker-compose -f docker-compose.dev.yml up'
+* For Production Environment: run 'docker-compose -f docker-compose.prod.yml up'
 
 Non-Docker:
 
@@ -56,7 +54,9 @@ Webpage runs at localhost:8080, backend listens on :3000
 ## Built With
 
 * [Aurelia](https://aurelia.io/home) - Frontend framework
-* [Node](https://nodejs.org/en/download/) - Backend framework
+* [Node](https://nodejs.org/en/download/) - Backend webserver
+* [Express](https://expressjs.com/) - Backend web framework
+* [PostgreSQL](https://www.postgresql.org/) - Database
 * [NPM](https://www.npmjs.com/) - Dependency Management
 * [Docker](https://www.docker.com/) - Containerization
 
