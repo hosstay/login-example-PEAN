@@ -29,7 +29,8 @@ async function createUser(req, res) {
     return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
   } catch (err) {
     util.errorHandler({err: err, context: 'createUser', isLast: true});
-    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: DEFAULT_ERROR_MESSAGE}}));
+    const errorMessage = err.message === 'Username already exists.' ? err.message : DEFAULT_ERROR_MESSAGE;
+    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: errorMessage}}));
   }
 }
 
@@ -61,7 +62,8 @@ async function login(req, res) {
     return res.status(200).json(security.encrypt({success: true, result: {success: true}}));
   } catch (err) {
     util.errorHandler({err: err, context: 'login', isLast: true});
-    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: DEFAULT_ERROR_MESSAGE}}));
+    const errorMessage = err.message === 'Incorrect username or password.' ? err.message : DEFAULT_ERROR_MESSAGE;
+    return res.status(200).json(security.encrypt({success: true, result: {success: false, msg: errorMessage}}));
   }
 }
 
