@@ -1,4 +1,4 @@
-# `full-stack-login-example-aurelia-node`
+# `login-example-PEAN`
 
 This project is bootstrapped by [aurelia-cli](https://github.com/aurelia/cli).
 

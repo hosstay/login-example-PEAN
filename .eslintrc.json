@@ -18,7 +18,7 @@
   "rules": {
       "strict": 0,
       "require-jsdoc": 0,
-      "linebreak-style": ["error", "windows"],
+      "linebreak-style": ["error", "unix"],
       "max-len": ["error", { "code": 10000 }],
           "eol-last": ["error", "never"],
       "comma-dangle": ["error", "never"],

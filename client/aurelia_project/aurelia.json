@@ -1,5 +1,5 @@
 {
-  "name": "full-stack-login-example-aurelia-node",
+  "name": "login-example-PEAN",
   "type": "project:application",
   "paths": {
     "root": "src",
@@ -26,6 +26,5 @@
     "port": 8080,
     "host": "localhost",
     "output": "dist"
-  },
-  "packageManager": "npm"
+  }
 }

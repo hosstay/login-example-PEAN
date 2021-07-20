@@ -1,25 +1,7 @@
 {
-  "name": "full-stack-login-example-aurelia-node",
-  "version": "1.0.0",
-  "description": "An implementation of a website with login using Aurelia, Node, Express, & Postgresql as well as various other libraries to get everything working together (check the package.json files in the client and server folders for the full list).",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hosstay/full-stack-login-example-aurelia-node.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hosstay/full-stack-login-example-aurelia-node/issues"
-  },
-  "homepage": "https://github.com/hosstay/full-stack-login-example-aurelia-node#readme",
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.3.1",
+    "eslint": "^7.31.0",
     "eslint-config-google": "^0.14.0"
-  },
-  "dependencies": {}
+  }
 }

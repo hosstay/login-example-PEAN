@@ -1,16 +1,13 @@
-import cryptoJs from '../../bower_components/crypto-js/crypto-js';
-import pako from 'pako';
+import cryptoJs from 'crypto-js';
 
 function encrypt(data) {
-  let result = pako.deflate(JSON.stringify(data), {to: 'string'});
-  result = (cryptoJs.AES.encrypt(result, '1234')).toString();
-  return result;
+  return cryptoJs.AES.encrypt(JSON.stringify(data), '1234').toString();
 }
 
 function decrypt(data) {
-  let result = (cryptoJs.AES.decrypt(data, '1234').toString(cryptoJs.enc.Utf8));
-  result = JSON.parse(pako.inflate(result, {to: 'string'}));
-  return result;
+  let result = cryptoJs.AES.decrypt(data, '1234');
+  result = result.toString(cryptoJs.enc.Utf8);
+  return JSON.parse(result);
 }
 
 /*
